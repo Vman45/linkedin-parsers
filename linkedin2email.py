@@ -32,7 +32,8 @@ def create_parser():
 #     2.7 {last}{first_initial}@{domain}                                #
 =========================================================================
     """)
-    parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.2")
+    parser.add_argument("-v", "--version", action="version", version="%(prog)s"
+    " 0.2")
     parser.add_argument("-i", "--inputf", type=Path, 
     help="LinkedIn web log to parse", required=True)
     parser.add_argument("-d", "--domain", 
@@ -54,13 +55,15 @@ def create_csv(file):
     pattern_name = re.compile(r"\"title\":.*?\"text\":\".*?\"")
     pattern_position = re.compile(r"\"headline\":.*?\"text\":\".*?\"")
 
-    with html_input.open(mode="r", encoding="utf-8") as fin, csv_output.open(mode="w", encoding="utf-8", newline="") as fout:
+    with html_input.open(mode="r", encoding="utf-8") as fin, \
+        csv_output.open(mode="w", encoding="utf-8", newline="") as fout:
         text = fin.read()
         match_name = re.findall(pattern_name, text)
         match_position = re.findall(pattern_position, text)
         names = [i.split(":")[-1].strip("\"") for i in match_name]
         positions = [i.split(":")[-1].strip("\"") for i in match_position]
-        names_cleansed = [re.sub(r"[-.']", "", name.split(",")[0]) if "," in name else re.sub(r"[-.']", "", name) for name in names]
+        names_cleansed = [re.sub(r"[-.']", "", name.split(",")[0]) 
+        if "," in name else re.sub(r"[-.']", "", name) for name in names]
         # create a tuple as dup keys won't work in dict
         combined = tuple(zip(names_cleansed, positions))
         writer = csv.DictWriter(fout, fieldnames=["Name", "Job Description"])
@@ -91,19 +94,26 @@ def email_format_gen(input, domain):
         f3.open(mode="w") as f3, f4.open(mode="w") as f4, \
             f5.open(mode="w") as f5, f6.open(mode="w") as f6, \
                 f7.open(mode="w") as f7:
-        emails_f1 = [name.split(maxsplit=1)[0][0] + re.sub(r"[ ]", "", name.split(maxsplit=1)[1]) + "@" + domain for name in names]
+        emails_f1 = [name.split(maxsplit=1)[0][0] + re.sub(r"[ ]", "", 
+        name.split(maxsplit=1)[1]) + "@" + domain for name in names]
         f1.write("\n".join(emails_f1))
-        emails_f2 = [name.split(maxsplit=1)[0] + re.sub(r"[ ]", "", name.split(maxsplit=1)[1]) + "@" + domain for name in names]
+        emails_f2 = [name.split(maxsplit=1)[0] + re.sub(r"[ ]", "", 
+        name.split(maxsplit=1)[1]) + "@" + domain for name in names]
         f2.write("\n".join(emails_f2))
-        emails_f3 = [name.split(maxsplit=1)[0] + "." + re.sub(r"[ ]", "", name.split(maxsplit=1)[1]) + "@" + domain for name in names]
+        emails_f3 = [name.split(maxsplit=1)[0] + "." + re.sub(r"[ ]", "", 
+        name.split(maxsplit=1)[1]) + "@" + domain for name in names]
         f3.write("\n".join(emails_f3))
-        emails_f4 = [name.split(maxsplit=1)[0] + "_" + re.sub(r"[ ]", "", name.split(maxsplit=1)[1]) + "@" + domain for name in names]
+        emails_f4 = [name.split(maxsplit=1)[0] + "_" + re.sub(r"[ ]", "", 
+        name.split(maxsplit=1)[1]) + "@" + domain for name in names]
         f4.write("\n".join(emails_f4))
-        emails_f5 = [name.split(maxsplit=1)[0] + re.sub(r"[ ]", "", name.split(maxsplit=1)[1][0]) + "@" + domain for name in names]
+        emails_f5 = [name.split(maxsplit=1)[0] + re.sub(r"[ ]", "", 
+        name.split(maxsplit=1)[1][0]) + "@" + domain for name in names]
         f5.write("\n".join(emails_f5))
-        emails_f6 = [name.split(maxsplit=1)[0] + "@" + domain for name in names]
+        emails_f6 = [name.split(maxsplit=1)[0] + "@" + domain 
+        for name in names]
         f6.write("\n".join(emails_f6))
-        emails_f7 = [re.sub(r"[ ]", "", name.split(maxsplit=1)[1]) + name.split(maxsplit=1)[0][0] + "@" + domain for name in names]
+        emails_f7 = [re.sub(r"[ ]", "", name.split(maxsplit=1)[1]) + 
+        name.split(maxsplit=1)[0][0] + "@" + domain for name in names]
         f7.write("\n".join(emails_f7))
         output_text = "[*] Email lists saved under:"
         print("{:<30}{}\\*".format(output_text, output_dir))
