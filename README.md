@@ -16,12 +16,12 @@ The process works like this:
 ```
 /voyager/api/search/blended?count=40&filters=List(currentCompany-%3E{companyId}},resultType-%3EPEOPLE)&origin=OTHER&q=all&queryContext=List(spellCorrectionEnabled-%3Etrue,relatedSearchesEnabled-%3Etrue)&start=0
 ```
-2. Send it to Burp repeater and play it a few times and we should have a list of employees. Saved it locally.
+2. Send it to Burp repeater and play it a few times until we hit the value mentioned in ```totalResultCount``` param (you can get this value from the HTTP response body) and we should have a complete list of employees. Save the response locally.
 3. Use ```linkedin2email.py``` for your parsing pleasure, provide it with the location of the saved file and the domain name.
 4. Profit?
 
 ## Usage
-For the sake of demonstration, imagine you are red-teaming E Corp and because of limited Internet footprint, you could not find a lot of email addresses more sources such as data breaches. You then decided to give LinkedIn a go. You logged in, search for E Corp with Burp running as your proxy. You then saved the responses to a file locally. The content should look like this *(accurate as of 11 June 2020; LinkedIn does change stuff from time to time, so the accuracy of the response body might have changed after this date)*:
+For the sake of demonstration, let's imagine you are red-teaming E Corp and because of limited Internet footprint, you could not find a lot of email addresses of the target organisation from sources such as data breaches. You then decided to give LinkedIn a go. You logged in, searched for E Corp with Burp running as your proxy. You then saved the responses to a file locally. The content should look like below *(accurate as of 11 June 2020; LinkedIn does change stuff from time to time, so the accuracy of the response body might have changed after this date)*:
 ```
 GET /voyager/api/search/blended?count=40&filters=List(currentCompany-%3E{companyId}},resultType-%3EPEOPLE)&origin=OTHER&q=all&queryContext=List(spellCorrectionEnabled-%3Etrue,relatedSearchesEnabled-%3Etrue)&start=0 HTTP/1.1
 Host: www.linkedin.com
@@ -45,7 +45,7 @@ Expires: Thu, 01 Jan 1970 00:00:00 GMT
 {"data":{"metadata":{"totalResultDisplayText":{"text":"290 results","$type":"com.linkedin.voyager.common.TextViewModel"},"searchId":"069ce6a3-765a-427a-9337-6f8cb06490dc","totalResultCount":290,"origin":"OTHER","numVisibleResults":40,"$type":"com.linkedin.voyager.search.BlendedSearchMetadata"},"entityUrn":"urn:li:collectionResponse:iWS49EODL9ISfkfOCcNZY2yikfmaWBLAA+PsGKDLiMw=","elements":[{"extendedElements":[{"searchTieIn":"FREE_UPSELL","type":"SEARCH_TIE_IN","$type":"com.linkedin.voyager.search.ExtendedSearchHit"}],"elements":[],"type":"SEARCH_FEATURES","$type":"com.linkedin.voyager.search.BlendedSearchCluster"},{"extendedElements":[],"elements":[{"memberDistance":{"value":"DISTANCE_3","$type":"com.linkedin.voyager.common.MemberDistance"},"image":{"attributes":[{"sourceType":"PROFILE_PICTURE","*miniProfile":"urn:li:fs_miniProfile:ACoAAAFFtjkBJFXV-YqyxPfQV-1SbQIVjXmnJDo","$type":"com.linkedin.voyager.common.ImageAttribute"}],"accessibilityTextAttributes":[],"$type":"com.linkedin.voyager.common.ImageViewModel"},"targetUrn":"urn:li:fs_miniProfile:ACoAAAFFtjkBJFXV-YqyxPfQV-1SbQIVjXmnJDo","socialProofImagePile":[],"trackingUrn":"urn:li:member:21345849","navigationUrl":"https://www.linkedin.com/in/kumar-asaka-b091947","title":{"textDirection":"USER_LOCALE","text":"Kumar Asaka","$type":"com.linkedin.voyager.common.TextViewModel"},"type":"PROFILE","$type":"com.linkedin.voyager.search.SearchHitV2","headless":false,"socialProofText":"0 shared connections","secondaryTitle":{"textDirection":"USER_LOCALE","text":"3rd+","$type":"com.linkedin.voyager.common.TextViewModel"},"*badges":"urn:li:fs_memberBadges:ACoAAAFFtjkBJFXV-YqyxPfQV-1SbQIVjXmnJDo","publicIdentifier":"kumar-asaka-b091947","headline":{"textDirection":"USER_LOCALE","text":"Program Director at E Corp","$type":"com.linkedin.voyager.common.TextViewModel"},"nameMatch":false,"subline":{"textDirection":"USER_LOCALE","text":"Tonbridge, United Kingdom","$type":"com.linkedin.voyager.common.TextViewModel"},"trackingId":"wSKPl/GARVmSoNPEnhxBeQ=="}
 ```
 
-Now you can just point the script to the location, plus providing the domain name so that it will be appended automagically for you.
+Now you can just point the script to the file location, plus providing the domain name so that it will be appended automagically for you.
 ```
 PS C:\LinkedIn-parser> python linkedin2email.py -i "./linkedin-ecorp-001-320.log" -d ecorp.com
 [*] CSV file saved at:        C:\LinkedIn-parser\names_positions.csv
@@ -68,7 +68,7 @@ d-----       11/06/2020     21:35                ecorp.com
 -a----       11/06/2020     21:36           5206 names_positions.csv
 ```
 
-The content of the CSV file should look like this, giving you a nice understand of who holds what position in the target company:
+The content of the CSV file should look like this, giving you a nice understanding of who holds what position within the target organisation:
 ```
 Name,Job Description
 Kumar Asaka,Program Director at E Corp
@@ -88,7 +88,7 @@ Quan Murrayfield,IT Consultant at E Corp
 Hafiz Al Mukhriz,Managing Director at E Corp
 ```
 
-Looking at the directory, email addresses in seven different formats were generated:
+Peeking inside the newly created directory/folder, email addresses in seven different formats were generated:
 ```
 PS C:\LinkedIn-parser> ls .\ecorp.com\
 
