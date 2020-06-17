@@ -3,7 +3,7 @@
 A script that, given a company name, extracts a list of its employees from 
 LinkedIn to produce text files that consist of commonly seen email formats
 
-Author: Jeffrey Soh
+Author: j3soh
 """
 
 from pathlib import Path

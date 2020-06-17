@@ -26,7 +26,9 @@ Based on your OSINT (such as looking through whois records, etc.), you establish
 Now you can just point the script ```linkedin2email.py``` to the location of the downloaded chromedriver, plus providing the company and domain name so that it will be appended *automagically* for you.
 
 *Note: As a way of paying homage to Mr. Robot, a fictional company E Corp is used below, just for demonstration.*
+
 ![robot-gif](images/mrrobot.gif)
+
 ```
 PS C:\LinkedIn-parser> python linkedin2email.py -w {chromedriver_loc} -u {linkedin_username} -p {linkedin_password} -c ecorp -d ecorp.com
 [+] Success! A total of 15 employees found:
