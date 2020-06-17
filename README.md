@@ -213,4 +213,6 @@ almukhrizh@ecorp.com
 ```
 
 ## Disclaimers
-Scripts worked as of mid June 2020; LinkedIn does change stuff from time to time, so the scripts may require minor tweaking from time to time.
+* The tool is purely for research and educational purposes only. Usage of any of these scripts for attacking targets without prior explicit written consent is illegal and unethical. The owner of this repository cannot be held responsible for any damages caused.
+
+* Scripts worked as of mid June 2020; LinkedIn does change stuff from time to time, so the scripts may require minor tweaking from time to time.
