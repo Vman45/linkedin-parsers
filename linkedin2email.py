@@ -24,15 +24,14 @@ def create_parser():
 #                                                                       #
 # A script that, given a company name, extracts a list of its employees #
 # from LinkedIn to produce:                                             #
-#  1. Output a csv that contains their name and job title               #
-#  2. Takes names and output files with the following email formats:    #
-#     2.1 {first_initial}{last}@{domain}                                #
-#     2.2 {first}{last}@{domain}                                        #
-#     2.3 {first}.{last}@{domain}                                       #
-#     2.4 {first}_{last}@{domain}                                       #
-#     2.5 {first}{last_initial}@{domain}                                #
-#     2.6 {first}@{domain}                                              #
-#     2.7 {last}{first_initial}@{domain}                                #
+#  1. Email addresses in the following email formats:                   #
+#     1.1 {first_initial}{last}@{domain}                                #
+#     1.2 {first}{last}@{domain}                                        #
+#     1.3 {first}.{last}@{domain}                                       #
+#     1.4 {first}_{last}@{domain}                                       #
+#     1.5 {first}{last_initial}@{domain}                                #
+#     1.6 {first}@{domain}                                              #
+#     1.7 {last}{first_initial}@{domain}                                #
 =========================================================================
     """)
     parser.add_argument("-v", "--version", action="version", version="%(prog)s v1.0")

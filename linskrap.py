@@ -5,7 +5,7 @@ import time
 
 def skrap_emp(driver, username, password, company):
     """ logs in to linkedin.com using the given username & password, browses to 
-    the target company, and extracts its employees and stores in a list """
+    the target company, and extracts its employees and stores them in a list """
     sleep_time = 1
     driver = webdriver.Chrome(driver)
     driver.get("https://www.linkedin.com/login")
